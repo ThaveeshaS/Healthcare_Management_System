@@ -27,3 +27,4 @@ http://localhost:8004/docs
 cd pharmacy-service
 uvicorn main:app --reload --port 8005
 http://localhost:8005/docs
+
