@@ -9,9 +9,12 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS medicines (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            stock INTEGER NOT NULL,
-            price REAL NOT NULL
+            medicine_name TEXT NOT NULL,
+            category TEXT NOT NULL,
+            dosage TEXT NOT NULL,
+            expiry_date TEXT NOT NULL,
+            price REAL NOT NULL,
+            doctor_note TEXT NOT NULL
         )
     ''')
     conn.commit()
@@ -39,9 +42,9 @@ def create(med: MedicineCreate):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO medicines (name, stock, price)
-        VALUES (?, ?, ?)
-    ''', (med.name, med.stock, med.price))
+        INSERT INTO medicines (medicine_name, category, dosage, expiry_date, price, doctor_note)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (med.medicine_name, med.category, med.dosage, med.expiry_date.isoformat(), med.price, med.doctor_note))
     conn.commit()
     new_id = cursor.lastrowid
     conn.close()
@@ -52,15 +55,24 @@ def update(mid: int, med: MedicineUpdate):
     cursor = conn.cursor()
     updates = []
     values = []
-    if med.name is not None:
-        updates.append("name = ?")
-        values.append(med.name)
-    if med.stock is not None:
-        updates.append("stock = ?")
-        values.append(med.stock)
+    if med.medicine_name is not None:
+        updates.append("medicine_name = ?")
+        values.append(med.medicine_name)
+    if med.category is not None:
+        updates.append("category = ?")
+        values.append(med.category)
+    if med.dosage is not None:
+        updates.append("dosage = ?")
+        values.append(med.dosage)
+    if med.expiry_date is not None:
+        updates.append("expiry_date = ?")
+        values.append(med.expiry_date.isoformat())
     if med.price is not None:
         updates.append("price = ?")
         values.append(med.price)
+    if med.doctor_note is not None:
+        updates.append("doctor_note = ?")
+        values.append(med.doctor_note)
     if not updates:
         return get_by_id(mid)
     values.append(mid)
