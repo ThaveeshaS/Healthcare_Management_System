@@ -35,3 +35,12 @@ http://localhost:8004/docs
 cd pharmacy-service
 uvicorn main:app --reload --port 8005
 http://localhost:8005/docs
+
+
+# Group members
+
+patient-service - Thaveesha
+doctor-service - Ayanima
+appointment-service - Viraj
+billing-service - Amesh
+pharmacy-service - Sahan
