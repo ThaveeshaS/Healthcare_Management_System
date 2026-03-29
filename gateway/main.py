@@ -1,8 +1,21 @@
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 import httpx
 from typing import Any
 from middleware import LoggingMiddleware
+from models import (
+    AppointmentCreate,
+    AppointmentUpdate,
+    BillCreate,
+    BillUpdate,
+    DoctorCreate,
+    DoctorUpdate,
+    MedicineCreate,
+    MedicineUpdate,
+    PatientCreate,
+    PatientUpdate,
+)
 # from auth import get_current_user  # uncomment if using JWT
 
 app = FastAPI(title="API Gateway", version="1.0.0")
@@ -74,14 +87,14 @@ async def get_patient(patient_id: int):
     return await forward_request("patient", f"/api/patients/{patient_id}", "GET")
 
 @app.post("/gateway/patients")
-async def create_patient(request: Request):
-    body = await request.json()
-    return await forward_request("patient", "/api/patients", "POST", json=body)
+async def create_patient(body: PatientCreate):
+    payload = jsonable_encoder(body)
+    return await forward_request("patient", "/api/patients", "POST", json=payload)
 
 @app.put("/gateway/patients/{patient_id}")
-async def update_patient(patient_id: int, request: Request):
-    body = await request.json()
-    return await forward_request("patient", f"/api/patients/{patient_id}", "PUT", json=body)
+async def update_patient(patient_id: int, body: PatientUpdate):
+    payload = jsonable_encoder(body, exclude_none=True)
+    return await forward_request("patient", f"/api/patients/{patient_id}", "PUT", json=payload)
 
 @app.delete("/gateway/patients/{patient_id}")
 async def delete_patient(patient_id: int):
@@ -97,14 +110,14 @@ async def get_doctor(doctor_id: int):
     return await forward_request("doctor", f"/api/doctors/{doctor_id}", "GET")
 
 @app.post("/gateway/doctors")
-async def create_doctor(request: Request):
-    body = await request.json()
-    return await forward_request("doctor", "/api/doctors", "POST", json=body)
+async def create_doctor(body: DoctorCreate):
+    payload = jsonable_encoder(body)
+    return await forward_request("doctor", "/api/doctors", "POST", json=payload)
 
 @app.put("/gateway/doctors/{doctor_id}")
-async def update_doctor(doctor_id: int, request: Request):
-    body = await request.json()
-    return await forward_request("doctor", f"/api/doctors/{doctor_id}", "PUT", json=body)
+async def update_doctor(doctor_id: int, body: DoctorUpdate):
+    payload = jsonable_encoder(body, exclude_none=True)
+    return await forward_request("doctor", f"/api/doctors/{doctor_id}", "PUT", json=payload)
 
 @app.delete("/gateway/doctors/{doctor_id}")
 async def delete_doctor(doctor_id: int):
@@ -120,14 +133,14 @@ async def get_appointment(appointment_id: int):
     return await forward_request("appointment", f"/api/appointments/{appointment_id}", "GET")
 
 @app.post("/gateway/appointments")
-async def create_appointment(request: Request):
-    body = await request.json()
-    return await forward_request("appointment", "/api/appointments", "POST", json=body)
+async def create_appointment(body: AppointmentCreate):
+    payload = jsonable_encoder(body)
+    return await forward_request("appointment", "/api/appointments", "POST", json=payload)
 
 @app.put("/gateway/appointments/{appointment_id}")
-async def update_appointment(appointment_id: int, request: Request):
-    body = await request.json()
-    return await forward_request("appointment", f"/api/appointments/{appointment_id}", "PUT", json=body)
+async def update_appointment(appointment_id: int, body: AppointmentUpdate):
+    payload = jsonable_encoder(body, exclude_none=True)
+    return await forward_request("appointment", f"/api/appointments/{appointment_id}", "PUT", json=payload)
 
 @app.delete("/gateway/appointments/{appointment_id}")
 async def delete_appointment(appointment_id: int):
@@ -143,14 +156,14 @@ async def get_bill(bill_id: int):
     return await forward_request("billing", f"/api/bills/{bill_id}", "GET")
 
 @app.post("/gateway/bills")
-async def create_bill(request: Request):
-    body = await request.json()
-    return await forward_request("billing", "/api/bills", "POST", json=body)
+async def create_bill(body: BillCreate):
+    payload = jsonable_encoder(body)
+    return await forward_request("billing", "/api/bills", "POST", json=payload)
 
 @app.put("/gateway/bills/{bill_id}")
-async def update_bill(bill_id: int, request: Request):
-    body = await request.json()
-    return await forward_request("billing", f"/api/bills/{bill_id}", "PUT", json=body)
+async def update_bill(bill_id: int, body: BillUpdate):
+    payload = jsonable_encoder(body, exclude_none=True)
+    return await forward_request("billing", f"/api/bills/{bill_id}", "PUT", json=payload)
 
 @app.delete("/gateway/bills/{bill_id}")
 async def delete_bill(bill_id: int):
@@ -166,14 +179,14 @@ async def get_medicine(medicine_id: int):
     return await forward_request("pharmacy", f"/api/medicines/{medicine_id}", "GET")
 
 @app.post("/gateway/medicines")
-async def create_medicine(request: Request):
-    body = await request.json()
-    return await forward_request("pharmacy", "/api/medicines", "POST", json=body)
+async def create_medicine(body: MedicineCreate):
+    payload = jsonable_encoder(body)
+    return await forward_request("pharmacy", "/api/medicines", "POST", json=payload)
 
 @app.put("/gateway/medicines/{medicine_id}")
-async def update_medicine(medicine_id: int, request: Request):
-    body = await request.json()
-    return await forward_request("pharmacy", f"/api/medicines/{medicine_id}", "PUT", json=body)
+async def update_medicine(medicine_id: int, body: MedicineUpdate):
+    payload = jsonable_encoder(body, exclude_none=True)
+    return await forward_request("pharmacy", f"/api/medicines/{medicine_id}", "PUT", json=payload)
 
 @app.delete("/gateway/medicines/{medicine_id}")
 async def delete_medicine(medicine_id: int):
