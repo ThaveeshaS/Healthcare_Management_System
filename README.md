@@ -1,8 +1,16 @@
 
 # Healthcare_Management_System
 
-venv\Scripts\activate 
+# Step 01:
 
+# Create virtual environment 
+    python -m venv venv 
+# Activate virtual environment 
+    venv\Scripts\activate 
+# Install the packages
+    pip install -r requirements.txt 
+
+# Step 02:
 
 cd gateway
 uvicorn main:app --reload --port 8000
@@ -28,3 +36,11 @@ cd pharmacy-service
 uvicorn main:app --reload --port 8005
 http://localhost:8005/docs
 
+
+# Group members
+
+patient-service - Thaveesha
+doctor-service - Ayanima
+appointment-service - Viraj
+billing-service - Amesh
+pharmacy-service - Sahan
