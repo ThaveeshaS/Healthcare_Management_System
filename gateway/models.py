@@ -52,17 +52,19 @@ class AppointmentUpdate(BaseModel):
 
 class BillCreate(BaseModel):
     patient_id: int
+    date: date
+    payment_method: str  # Added to match billing service
     amount: float
     status: str = "unpaid"
-    date: date
-
+    items: str           # Added to match billing service
 
 class BillUpdate(BaseModel):
     patient_id: Optional[int] = None
+    date: Optional[date] = None
+    payment_method: Optional[str] = None # Added
     amount: Optional[float] = None
     status: Optional[str] = None
-    date: Optional[date] = None
-
+    items: Optional[str] = None          # Added
 
 class MedicineCreate(BaseModel):
     medicine_name: str
