@@ -10,9 +10,11 @@ def init_db():
         CREATE TABLE IF NOT EXISTS bills (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             patient_id INTEGER NOT NULL,
+            date TEXT NOT NULL,
+            payment_method TEXT NOT NULL,
             amount REAL NOT NULL,
             status TEXT NOT NULL,
-            date TEXT NOT NULL
+            items TEXT NOT NULL
         )
     ''')
     conn.commit()
@@ -40,9 +42,9 @@ def create(bill: BillCreate):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO bills (patient_id, amount, status, date)
-        VALUES (?, ?, ?, ?)
-    ''', (bill.patient_id, bill.amount, bill.status, bill.date.isoformat()))
+        INSERT INTO bills (patient_id, date, payment_method, amount, status, items)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (bill.patient_id, bill.date.isoformat(), bill.payment_method, bill.amount, bill.status, bill.items))
     conn.commit()
     new_id = cursor.lastrowid
     conn.close()
@@ -56,15 +58,21 @@ def update(bid: int, bill: BillUpdate):
     if bill.patient_id is not None:
         updates.append("patient_id = ?")
         values.append(bill.patient_id)
+    if bill.date is not None:
+        updates.append("date = ?")
+        values.append(bill.date.isoformat())
+    if bill.payment_method is not None:
+        updates.append("payment_method = ?")
+        values.append(bill.payment_method)
     if bill.amount is not None:
         updates.append("amount = ?")
         values.append(bill.amount)
     if bill.status is not None:
         updates.append("status = ?")
         values.append(bill.status)
-    if bill.date is not None:
-        updates.append("date = ?")
-        values.append(bill.date.isoformat())
+    if bill.items is not None:
+        updates.append("items = ?")
+        values.append(bill.items)
     if not updates:
         return get_by_id(bid)
     values.append(bid)

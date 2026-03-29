@@ -147,6 +147,7 @@ async def delete_appointment(appointment_id: int):
     return await forward_request("appointment", f"/api/appointments/{appointment_id}", "DELETE")
 
 # Billing routes
+
 @app.get("/gateway/bills")
 async def get_all_bills():
     return await forward_request("billing", "/api/bills", "GET")
@@ -157,11 +158,13 @@ async def get_bill(bill_id: int):
 
 @app.post("/gateway/bills")
 async def create_bill(body: BillCreate):
+    # jsonable_encoder converts 'date' objects to ISO strings automatically
     payload = jsonable_encoder(body)
     return await forward_request("billing", "/api/bills", "POST", json=payload)
 
 @app.put("/gateway/bills/{bill_id}")
 async def update_bill(bill_id: int, body: BillUpdate):
+    # exclude_none=True ensures we only send fields the user wants to change
     payload = jsonable_encoder(body, exclude_none=True)
     return await forward_request("billing", f"/api/bills/{bill_id}", "PUT", json=payload)
 
