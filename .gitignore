@@ -11,6 +11,11 @@ __pycache__/
 
 # SQLite/DB
 *.db
+*.sqlite
+*.sqlite3
+*.db-*
+*-shm
+*-wal
 
 # Environment / editor
 .env
@@ -18,6 +23,16 @@ __pycache__/
 *.venv
 .idea/
 .vscode/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build / packaging
+dist/
+build/
+*.egg-info/
 
 # OS
 .DS_Store
