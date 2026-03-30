@@ -8,11 +8,11 @@ app = FastAPI(title="Doctor Microservice", version="1.0.0")
 def read_root():
     return {"message": "Doctor Microservice is running"}
 
-@app.get("/api/doctors", response_model=list[Doctor])
+@app.get("/api/doctors", response_model=list[Doctor]) # Get all doctors
 def get_all():
     return db.get_all()
 
-@app.get("/api/doctors/{doctor_id}", response_model=Doctor)
+@app.get("/api/doctors/{doctor_id}", response_model=Doctor) # Get doctor by ID
 def get_by_id(doctor_id: int):
     doctor = db.get_by_id(doctor_id)
     if not doctor:
